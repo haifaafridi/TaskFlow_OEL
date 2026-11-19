@@ -63,7 +63,7 @@ public final class TaskStore implements AutoCloseable {
             data.load(input);
             if (!"1".equals(data.getProperty("version"))) throw new IllegalArgumentException();
             int count = Integer.parseInt(data.getProperty("count", ""));
-            if (count < 0 || count > data.size() / 4) throw new IllegalArgumentException();
+            if (count < 0 || data.size() != 2L + 4L * count) throw new IllegalArgumentException();
             Set<UUID> seen = new HashSet<>();
             for (int i = 0; i < count; i++) {
                 String prefix = i + ".";

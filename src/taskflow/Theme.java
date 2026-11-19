@@ -10,18 +10,28 @@ import javax.swing.border.Border;
  * @author TaskFlow project
  */
 final class Theme {
+    /** Dark ink for headers and primary text. */
     static final Color INK = new Color(0x172E34);
+    /** Secondary text color. */
     static final Color MUTED = new Color(0x50666B);
+    /** Primary action color. */
     static final Color TEAL = new Color(0x146D60);
+    /** Selected row and secondary action fill. */
     static final Color PALE = new Color(0xDDF2EA);
+    /** Workspace background. */
     static final Color CANVAS = new Color(0xF5F7F5);
+    /** Borders and table dividers. */
     static final Color LINE = new Color(0xD4DEDA);
+    /** Validation and deletion accent. */
     static final Color RED = new Color(0xA43A32);
+    /** Form and table surface. */
     static final Color WHITE = Color.WHITE;
     private static final String FAMILY = chooseFont();
 
+    /** Groups static styling methods and prevents construction. */
     private Theme() { }
 
+    /** Picks the first installed family in the desktop font preference order. */
     private static String chooseFont() {
         var installed = Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getAvailableFontFamilyNames());

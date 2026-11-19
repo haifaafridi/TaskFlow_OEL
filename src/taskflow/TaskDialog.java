@@ -10,6 +10,7 @@ import javax.swing.*;
  * Modal task editor and deletion confirmation. A successful save closes the dialog.
  * @author TaskFlow project
  */
+@SuppressWarnings("serial")
 final class TaskDialog extends JDialog {
     private final JPanel fields = Theme.panel(null, Theme.WHITE);
     private final JPanel actions = Theme.panel(new FlowLayout(FlowLayout.RIGHT, 8, 0), Theme.WHITE);
@@ -137,6 +138,7 @@ final class TaskDialog extends JDialog {
         return dialog.saved != null;
     }
 
+    /** Adds a label and its input to the form in keyboard traversal order. */
     private void field(String caption, JComponent component, JComponent input) {
         JLabel label = Theme.label(caption, 13, Font.BOLD, Theme.INK);
         label.setLabelFor(input);
@@ -148,11 +150,13 @@ final class TaskDialog extends JDialog {
         fields.add(Box.createVerticalStrut(10));
     }
 
+    /** Displays an actionable save error and retains the failure detail in a tooltip. */
     private void saveError(IOException ex) {
         error.setText("Could not save. Check disk space and write access.");
         error.setToolTipText(ex.getMessage());
     }
 
+    /** Places the dialog over its owner and gives focus to its first useful control. */
     private void showForm(Window parent, JComponent firstFocus) {
         pack();
         setMinimumSize(getSize());

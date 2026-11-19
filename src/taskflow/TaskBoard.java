@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
  * Main workspace with status counts, a text search and the list of matching tasks.
  * @author TaskFlow project
  */
+@SuppressWarnings("serial")
 final class TaskBoard extends JPanel {
     private final TaskManager manager;
     private final TaskTable table = new TaskTable();
@@ -82,17 +83,20 @@ final class TaskBoard extends JPanel {
         refresh();
     }
 
+    /** Enables row actions only when the table has a selection. */
     private void updateActions() {
         boolean selected = table.selectedTask() != null;
         edit.setEnabled(selected);
         delete.setEnabled(selected);
     }
 
+    /** Opens the editor for the currently selected task. */
     private void editSelection() {
         Task selected = table.selectedTask();
         if (selected != null) editTask(selected);
     }
 
+    /** Saves a new or revised task, refreshes the table and reveals the saved row if visible. */
     private void editTask(Task original) {
         Task saved = TaskDialog.edit(SwingUtilities.getWindowAncestor(this), manager, original);
         if (saved == null) return;
@@ -105,6 +109,7 @@ final class TaskBoard extends JPanel {
         feedback.setText((original == null ? "Task added.  " : "Changes saved.  ") + feedback.getText());
     }
 
+    /** Builds the brand bar and local storage indicator. */
     private JPanel header() {
         JPanel bar = Theme.panel(new BorderLayout(), Theme.INK);
         bar.setBorder(BorderFactory.createEmptyBorder(14, 30, 14, 30));
@@ -116,6 +121,7 @@ final class TaskBoard extends JPanel {
         return bar;
     }
 
+    /** Builds status filters and a live title-and-description search field. */
     private JPanel toolbar() {
         JPanel line = Theme.panel(new BorderLayout(10, 0), Theme.CANVAS);
         JPanel tabs = Theme.panel(new FlowLayout(FlowLayout.LEFT, 4, 0), Theme.CANVAS);
@@ -147,6 +153,7 @@ final class TaskBoard extends JPanel {
         return line;
     }
 
+    /** Builds the message shown when the workspace or current view contains no tasks. */
     private JPanel emptyState() {
         JPanel center = Theme.panel(new GridBagLayout(), Theme.WHITE);
         JPanel stack = Theme.panel(new GridLayout(2, 1, 0, 6), Theme.WHITE);

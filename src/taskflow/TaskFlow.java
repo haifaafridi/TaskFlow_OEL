@@ -12,6 +12,7 @@ import javax.swing.*;
  * @author TaskFlow project
  */
 public final class TaskFlow {
+    /** Prevents construction of the application entry point. */
     private TaskFlow() { }
 
     /** Starts the Swing event-dispatch thread.
@@ -21,6 +22,7 @@ public final class TaskFlow {
         SwingUtilities.invokeLater(TaskFlow::open);
     }
 
+    /** Opens the workspace on the event thread and releases its lock when the window closes. */
     private static void open() {
         Path directory = Path.of(System.getProperty("taskflow.dir",
                 Path.of(System.getProperty("user.home"), ".taskflow").toString()));

@@ -10,6 +10,7 @@ import javax.swing.table.TableCellRenderer;
  * A read-only table that displays titles, notes previews and labelled status badges.
  * @author TaskFlow project
  */
+@SuppressWarnings("serial")
 final class TaskTable extends JTable {
     private final Rows rows = new Rows();
 
@@ -67,6 +68,7 @@ final class TaskTable extends JTable {
         }
     }
 
+    /** Renders a title and the first line of its description. */
     private TableCellRenderer detailsRenderer() {
         return (table, value, selected, focus, row, col) -> {
             Task task = (Task) value;
@@ -79,6 +81,7 @@ final class TaskTable extends JTable {
         };
     }
 
+    /** Displays each stage with both a text label and a distinct fill color. */
     private TableCellRenderer statusRenderer() {
         return (table, value, selected, focus, row, col) -> {
             Status status = (Status) value;
