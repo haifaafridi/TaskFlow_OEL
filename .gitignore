@@ -1,9 +1,10 @@
 /out/
+/bin/
 /test-out/
 *.class
 .idea/
 *.iml
-.classpath
-.project
-.settings/
+.settings/*
+!.settings/org.eclipse.jdt.core.prefs
+!.settings/org.eclipse.core.resources.prefs
 .DS_Store

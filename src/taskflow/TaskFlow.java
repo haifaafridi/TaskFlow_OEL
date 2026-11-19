@@ -31,6 +31,7 @@ public final class TaskFlow {
                 JFrame frame = new JFrame("TaskFlow — Task Management System");
                 frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 frame.setContentPane(new TaskBoard(manager));
+                frame.pack();
                 frame.setMinimumSize(new Dimension(790, 500));
                 frame.setSize(920, 610);
                 frame.setLocationRelativeTo(null);

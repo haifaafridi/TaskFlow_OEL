@@ -51,6 +51,16 @@ final class TaskDialog extends JDialog {
         title.setName("title");
         title.setFont(Theme.font(14, Font.PLAIN));
         title.setBorder(Theme.inputBorder());
+        title.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void clearTitleError() {
+                if (!title.getText().isBlank() && "Enter a task title.".equals(dialog.error.getText())) {
+                    dialog.error.setText(" ");
+                }
+            }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { clearTitleError(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { clearTitleError(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { clearTitleError(); }
+        });
         JTextArea notes = new JTextArea(original == null ? "" : original.description(), 4, 34);
         notes.setName("description");
         notes.setFont(Theme.font(14, Font.PLAIN));
