@@ -1,6 +1,8 @@
 package taskflow;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +24,8 @@ final class TaskBoard extends JPanel {
     private final JLabel emptyTitle = Theme.label("", 21, Font.BOLD, Theme.INK);
     private final JLabel emptyHint = Theme.label("", 14, Font.PLAIN, Theme.MUTED);
     private final JLabel feedback = Theme.label("", 13, Font.PLAIN, Theme.MUTED);
+    private final JButton edit = Theme.button("Edit task", Theme.PALE, Theme.TEAL);
+    private final JButton delete = Theme.button("Delete", new Color(0xF6E9E5), Theme.RED);
     private Status filter;
 
     /** Builds the workspace bound to a loaded task manager.
@@ -36,6 +40,10 @@ final class TaskBoard extends JPanel {
         JPanel top = Theme.panel(new BorderLayout(0, 17), Theme.CANVAS);
         JPanel titleRow = Theme.panel(new BorderLayout(), Theme.CANVAS);
         titleRow.add(Theme.label("My tasks", 32, Font.BOLD, Theme.INK), BorderLayout.WEST);
+        JButton add = Theme.button("+  Add task", Theme.TEAL, Theme.WHITE);
+        add.setName("add");
+        add.addActionListener(e -> editTask(null));
+        titleRow.add(add, BorderLayout.EAST);
         top.add(titleRow, BorderLayout.NORTH);
         top.add(toolbar(), BorderLayout.SOUTH);
         body.add(top, BorderLayout.NORTH);
@@ -48,9 +56,53 @@ final class TaskBoard extends JPanel {
         body.add(content, BorderLayout.CENTER);
         JPanel footer = Theme.panel(new BorderLayout(), Theme.CANVAS);
         footer.add(feedback, BorderLayout.WEST);
+        JPanel actions = Theme.panel(new FlowLayout(FlowLayout.RIGHT, 6, 0), Theme.CANVAS);
+        edit.setName("edit");
+        delete.setName("delete");
+        edit.addActionListener(e -> editSelection());
+        delete.addActionListener(e -> {
+            Task selected = table.selectedTask();
+            if (selected != null && TaskDialog.delete(SwingUtilities.getWindowAncestor(this), manager, selected)) {
+                refresh();
+                feedback.setText("Task deleted.  " + feedback.getText());
+            }
+        });
+        actions.add(edit);
+        actions.add(delete);
+        footer.add(actions, BorderLayout.EAST);
+        table.getSelectionModel().addListSelectionListener(e -> updateActions());
+        table.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && table.rowAtPoint(e.getPoint()) >= 0) editSelection();
+            }
+        });
+        updateActions();
         body.add(footer, BorderLayout.SOUTH);
         add(body, BorderLayout.CENTER);
         refresh();
+    }
+
+    private void updateActions() {
+        boolean selected = table.selectedTask() != null;
+        edit.setEnabled(selected);
+        delete.setEnabled(selected);
+    }
+
+    private void editSelection() {
+        Task selected = table.selectedTask();
+        if (selected != null) editTask(selected);
+    }
+
+    private void editTask(Task original) {
+        Task saved = TaskDialog.edit(SwingUtilities.getWindowAncestor(this), manager, original);
+        if (saved == null) return;
+        if (original == null) {
+            filter = null;
+            search.setText("");
+        }
+        refresh();
+        table.reveal(saved);
+        feedback.setText((original == null ? "Task added.  " : "Changes saved.  ") + feedback.getText());
     }
 
     private JPanel header() {
