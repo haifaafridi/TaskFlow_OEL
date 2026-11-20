@@ -51,3 +51,12 @@ To run a separate demo after compiling, use `java -Dtaskflow.dir=demo-workspace 
 ## Clone a published repository
 
 Open **Code → HTTPS** on the published GitHub project. Copy its clone URL. Run `git clone "PASTE_THE_COPIED_HTTPS_URL_HERE" TaskFlow`, replacing the quoted text, then `cd TaskFlow`. Use the Eclipse or terminal steps above. The submitted ZIP also includes a portable Git bundle alongside the source folder. The companion guide explains how to restore the original history and push it to an empty GitHub repository.
+
+## Quick Start (Windows)
+
+1. Install JDK 17 or newer.
+2. Open PowerShell in the project folder.
+3. Run `.\taskflow.cmd run` to launch the application.
+4. Run `.\taskflow.cmd test` to execute model tests.
+5. Run `.\taskflow.cmd ui-test evidence` to execute desktop tests.
+6. Run `.\taskflow.cmd docs` to generate Javadoc documentation.
